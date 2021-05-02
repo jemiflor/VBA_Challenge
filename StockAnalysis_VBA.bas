@@ -3,7 +3,7 @@ Sub StockAnalysis()
 
     Debug.Print "Starting ... "
     
-    'Declare timer varibales and start timer
+    'Decalare timer varibales and start timer
     Dim StartTime As Double
     Dim MinutesElapsed As String
     StartTime = Timer
@@ -150,6 +150,34 @@ Sub StockAnalysis()
             stockCounter = stockCounter + 1
             
         Next stockTicker
+        
+        'Bonus
+        'Declare variables for Greatest Stock Increase, Decrease Percentage
+        Dim greatestPercentIncrease As Double, greatestPercentDecrease As Double
+        Dim greatestStockVolume As Double
+        greatestPercentIncrease = WorksheetFunction.Max(currentWorksheet.Columns(11))
+        greatestPercentDecrease = WorksheetFunction.Min(currentWorksheet.Columns(11))
+        greatestStockVolume = WorksheetFunction.Max(currentWorksheet.Columns(12))
+
+         'Declare variables for Greatest Stock Increase , Decrease Percentage Rows
+        Dim greatestPercentIncreaseRow, greatestPercentDecreaseRow, greatestStockVolumeRow
+        greatestPercentIncreaseRow = WorksheetFunction.Match(greatestPercentIncrease, currentWorksheet.Columns(11), 0)
+        greatestPercentDecreaseRow = WorksheetFunction.Match(greatestPercentDecrease, currentWorksheet.Columns(11), 0)
+        greatestStockVolumeRow = WorksheetFunction.Match(greatestStockVolume, currentWorksheet.Columns(12), 0)
+
+        currentWorksheet.Cells(1, 16) = "Ticker"
+        currentWorksheet.Cells(1, 17) = "Value"
+        currentWorksheet.Cells(2, 15) = "Greatest % Increase"
+        currentWorksheet.Cells(3, 15) = "Greatest % Decrease"
+        currentWorksheet.Cells(4, 15) = "Greatest Total Volume"
+
+        currentWorksheet.Cells(2, 16) = currentWorksheet.Cells(greatestPercentIncreaseRow, 9)
+        currentWorksheet.Cells(3, 16) = currentWorksheet.Cells(greatestPercentDecreaseRow, 9)
+        currentWorksheet.Cells(4, 16) = currentWorksheet.Cells(greatestStockVolumeRow, 9)
+
+        currentWorksheet.Cells(2, 17) = Format(greatestPercentIncrease, "Percent")
+        currentWorksheet.Cells(3, 17) = Format(greatestPercentDecrease, "Percent")
+        currentWorksheet.Cells(4, 17) = greatestStockVolume
         
         'Write progress to debug window
         Debug.Print "Computed Stock Analysis for ... " & currentWorksheet.Name
